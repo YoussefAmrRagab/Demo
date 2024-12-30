@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -33,9 +32,10 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
     super.initState();
 
     accelerometerEventStream().listen((event) async {
-      double acceleration = sqrt(pow(event.x, 2) + pow(event.y, 2) + pow(event.z, 2));
-      double fallingVelocity = 15;
-      if (acceleration > fallingVelocity) {
+      double verticalAcceleration = event.y; // Focus on the y-axis for vertical motion
+      double fallingVelocity = -5; // Negative fallingVelocity for detecting acceleration towards the ground
+      if (verticalAcceleration < fallingVelocity) {
+        debugPrint(verticalAcceleration.toString());
         // TODO: implement action according to fall detection
         _makeCall('+201023287109');
         setState(() => fallStatus = "Fall detected!");
